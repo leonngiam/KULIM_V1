@@ -2,6 +2,8 @@ package com.wb.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -64,6 +66,16 @@ public class LoginUI extends JFrame{
 			loginButton.setFont(new Font("Serif", Font.PLAIN, 14));
 			loginButton.setBounds(240, 160, 80, 25);
 			panel.add(loginButton);			
+			
+			loginButton.addActionListener(new ActionListener() {
+				
+				@Override 
+	            public void actionPerformed(ActionEvent e)
+	            {
+					dispose();
+					new MainUI();
+	            }
+	        });  
 			
 			JLabel copyrightLabel = new JLabel("Copyright 2014 | All rights reserved");
 			copyrightLabel.setFont(new Font("Serif", Font.PLAIN, 10));
