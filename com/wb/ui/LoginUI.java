@@ -65,6 +65,11 @@ public class LoginUI extends JFrame{
 			loginButton.setBounds(240, 160, 80, 25);
 			panel.add(loginButton);			
 			
+			JLabel copyrightLabel = new JLabel("Copyright 2014 | All rights reserved");
+			copyrightLabel.setFont(new Font("Serif", Font.PLAIN, 10));
+			copyrightLabel.setBounds(140, 220, 180, 25);
+			panel.add(copyrightLabel);						
+			
 			this.setSize(430, 250);
 			this.setLocationRelativeTo(null);
 			setResizable(false);
