@@ -1,2 +1,8 @@
-KULIM_V1
-========
+JAR file required
+=================
+-ifxjdbc.jar
+-ifxjbdcx.jar
+
+Image file
+==========
+/resources/background.jpg
