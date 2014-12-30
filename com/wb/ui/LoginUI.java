@@ -92,8 +92,9 @@ public class LoginUI extends JFrame{
 								JOptionPane.showMessageDialog(LoginUI.this, "Username or Password incorrect", null, JOptionPane.ERROR_MESSAGE);
 							}
 						} 
-						catch (SQLException e1) {
+						catch (Exception e1) {
 							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(LoginUI.this, "Connection Failed", null, JOptionPane.ERROR_MESSAGE);
 							e1.printStackTrace();
 						}				
 					}
