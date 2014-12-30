@@ -4,15 +4,21 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import com.wb.bo.Criteria;
+import com.wb.bo.UserBO;
 
 public class LoginUI extends JFrame{
 
@@ -49,7 +55,7 @@ public class LoginUI extends JFrame{
 			userLabel.setBounds(100, 100, 80, 25);
 			panel.add(userLabel);
 
-			JTextField userText = new JTextField(20);
+			final JTextField userText = new JTextField(20);
 			userText.setBounds(160, 100, 160, 25);
 			panel.add(userText);
 
@@ -58,7 +64,7 @@ public class LoginUI extends JFrame{
 			passwordLabel.setBounds(100, 130, 80, 25);
 			panel.add(passwordLabel);
 
-			JPasswordField passwordText = new JPasswordField(20);
+			final JPasswordField passwordText = new JPasswordField(20);
 			passwordText.setBounds(160, 130, 160, 25);
 			panel.add(passwordText);
 
@@ -72,8 +78,29 @@ public class LoginUI extends JFrame{
 				@Override 
 	            public void actionPerformed(ActionEvent e)
 	            {
-					dispose();
-					new MainUI();
+					if(!userText.getText().equals("") && !passwordText.getText().equals("")){
+						try {
+							int activeUser = new UserBO().count(new Criteria[]{
+									new Criteria(UserBO.FILTER_USER_LOGIN, "=", userText.getText()),
+									new Criteria(UserBO.FILTER_PASSWORD, "=", passwordText.getText())
+							});
+							if(activeUser > 0){
+								dispose();
+								new MainUI();								
+							}	
+							else{
+								JOptionPane.showMessageDialog(LoginUI.this, "Username or Password incorrect", null, JOptionPane.ERROR_MESSAGE);
+							}
+						} 
+						catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}				
+					}
+					else{
+						dispose();
+						new MainUI();									
+					}
 	            }
 	        });  
 			
