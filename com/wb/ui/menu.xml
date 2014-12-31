@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+    <main-component code="ESTA">
+        <program>esta0001</program>
+        <program>misc0001</program>
+    </main-component>     
+    <main-component code="MILL">
+        <program>mill0001</program>
+        <program>misc0001</program>
+    </main-component>    
+    <main-component code="CFIG">
+        <program>cfig0001</program>
+        <program>cfig0002</program>
+        <program>cfig0003</program>
+        <program>cfig0004</program>
+    </main-component> 
+    <main-component code="ADMN">
+        <program>admn0001</program>
+    </main-component>  
+</menu>
