@@ -5,8 +5,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.wb.bo.Criteria;
+import com.wb.bo.LoginInfo;
 import com.wb.bo.UserBO;
 
 public class LoginUI extends JFrame{
@@ -67,8 +68,32 @@ public class LoginUI extends JFrame{
 			final JPasswordField passwordText = new JPasswordField(20);
 			passwordText.setBounds(160, 130, 160, 25);
 			panel.add(passwordText);
+			
+			final JButton loginButton = new JButton("Login");
+			passwordText.addKeyListener(
+		            new KeyListener() {
+						
+						@Override
+						public void keyTyped(KeyEvent e) {
+							// TODO Auto-generated method stub
+						}
+						
+						@Override
+						public void keyReleased(KeyEvent e) {
+							// TODO Auto-generated method stub
+						}
+						
+						@Override
+						public void keyPressed(KeyEvent e) {
+							// TODO Auto-generated method stub
 
-			JButton loginButton = new JButton("Login");
+
+		                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
+		                        loginButton.doClick();
+		                    }  
+						}
+					}		            
+		    );
 			loginButton.setFont(new Font("Serif", Font.PLAIN, 14));
 			loginButton.setBounds(240, 160, 80, 25);
 			panel.add(loginButton);			
@@ -85,6 +110,8 @@ public class LoginUI extends JFrame{
 									new Criteria(UserBO.FILTER_PASSWORD, "=", passwordText.getText())
 							});
 							if(activeUser > 0){
+								UserBO activeBO = new UserBO().locateByUserName(userText.getText());
+								LoginInfo.createLogin(activeBO.getId());
 								dispose();
 								new MainUI();								
 							}	
