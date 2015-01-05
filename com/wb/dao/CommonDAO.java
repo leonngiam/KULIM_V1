@@ -13,6 +13,7 @@ import java.sql.Types;
 import com.wb.bo.CommonBusinessObject;
 import com.wb.bo.Criteria;
 import com.wb.bo.GenUUIDUtil;
+import com.wb.bo.LoginInfo;
 import com.wb.bo.OrderBy;
 
 public class CommonDAO{
@@ -22,7 +23,7 @@ public class CommonDAO{
 	public String prepareInsertStatement(){
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append("INSERT INTO " + tableName + " (id,cid,sid,");
+		sql.append("INSERT INTO " + tableName + " (id,");
 		for (int i = 0; i < tableColumn.length; i++) {
 			if(i == 0){
 				sql.append(tableColumn[i]);
@@ -32,7 +33,7 @@ public class CommonDAO{
 			}
 		}
 		sql.append(",last_update_by, last_update_on, created_by, created_on) VALUES(");
-		int len = tableColumn.length + 7;
+		int len = tableColumn.length + 5;
 		for (int i = 0; i < len; i++) {
 			if(i == 0){
 				sql.append("?");
@@ -53,8 +54,6 @@ public class CommonDAO{
 		
 		bo.setId(id);
 		stmt.setString(++c, id);
-		stmt.setString(++c, "*");
-		stmt.setString(++c, "*");
 		for (int i = 0; i < tableColumn.length; i++) {
 			String key = tableColumn[i];
 			String methodName = "get" + key.substring(0,1).toUpperCase() + key.substring(1, key.length());
@@ -124,7 +123,7 @@ public class CommonDAO{
 		}		
 	    stmt.setNull(++c, Types.INTEGER);
 	    stmt.setNull(++c, Types.TIMESTAMP);
-	    stmt.setString(++c, "leon");
+	    stmt.setString(++c, LoginInfo.getLoginInfo());
 	    stmt.setTimestamp(++c, new java.sql.Timestamp(System.currentTimeMillis()));
 	}
 	
@@ -217,7 +216,7 @@ public class CommonDAO{
 				e.printStackTrace();
 			} 
 		}		
-	    stmt.setString(++c, "leon");
+	    stmt.setString(++c, LoginInfo.getLoginInfo());
 	    stmt.setTimestamp(++c, new java.sql.Timestamp(System.currentTimeMillis()));
 	    stmt.setString(++c, bo.getId());
 	}
