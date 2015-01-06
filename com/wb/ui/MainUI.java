@@ -2,7 +2,6 @@ package com.wb.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -163,13 +162,11 @@ public class MainUI extends JFrame{
     }
 
     public void createEditorInstance(String programId) {
-        JPanel editor = new JPanel();
         String className = "com.wb.ui." + programId.substring(0, 1).toUpperCase() + programId.substring(1,8) + "UI";
-        
+        JPanel view = new JPanel();
         try {
-			Component view =  (Component) Class.forName(className).newInstance();
-			
-			editor.add(view);			
+        	view =  (JPanel) Class.forName(className).newInstance();
+	        
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -177,8 +174,8 @@ public class MainUI extends JFrame{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-        
-        editors.addTab(MenuProperties.getProgramName(programId), editor);
-        editors.setSelectedComponent(editor);
+		
+        editors.addTab(MenuProperties.getProgramName(programId), view);
+        editors.setSelectedComponent(view);
     }
 }
