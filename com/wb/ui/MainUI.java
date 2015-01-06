@@ -50,7 +50,17 @@ public class MainUI extends JFrame{
 			JMenuBar menuBar = new JMenuBar();
 			JMenu fileMenu = new JMenu("File");
 			fileMenu.add(new JMenuItem("Change Password"));
-			fileMenu.add(new JMenuItem("Log Out"));
+			JMenuItem logOutMenuItem = new JMenuItem("Log Out");
+			fileMenu.add(logOutMenuItem);        	
+			logOutMenuItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					// TODO Auto-generated method stub
+					setVisible(false);
+					dispose();
+				}
+			});
 			menuBar.add(fileMenu);
 
 	        HashMap<String, List<String>> module = new HashMap<String, List<String>>();
