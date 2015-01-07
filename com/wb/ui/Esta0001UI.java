@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -99,12 +100,12 @@ public class Esta0001UI extends JPanel{
         c.gridy = 4;
         masterPane.add(remarkLbl, c);
 
-        JTextArea remarkTxt = new JTextArea(5,20);
+        JTextArea remarkArea = new JTextArea(5,20);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
         c.gridy = 4;
-        masterPane.add(remarkTxt, c);
+        masterPane.add(remarkArea, c);
 		
 		upperPane.add(masterPane, BorderLayout.WEST);
 		
@@ -211,6 +212,11 @@ public class Esta0001UI extends JPanel{
 		
 		add(bottomPane, BorderLayout.CENTER);
 		
+		JPanel buttonPane = new JPanel(new BorderLayout());
+		buttonPane.setBackground(Color.WHITE);	
+		buttonPane.add(new JButton("Submit"), BorderLayout.EAST);
+		
+		add(buttonPane, BorderLayout.PAGE_END);
 		
 	}	
 	
