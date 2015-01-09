@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,6 +20,9 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.text.DateFormatter;
+
+import org.freixas.jcalendar.JCalendarCombo;
 
 public class Esta0001UI extends JPanel{
 	
@@ -126,7 +132,11 @@ public class Esta0001UI extends JPanel{
         weighInConstraint.gridy = 0;
         weighInPane.add(weighInDtLabel, weighInConstraint);
 
-        JTextField weighInDtTxt = new JTextField();
+        JCalendarCombo weighInDtTxt = new JCalendarCombo(JCalendarCombo.DISPLAY_DATE | JCalendarCombo.DISPLAY_TIME, true);
+        weighInDtTxt.setDateFormat(new SimpleDateFormat("yyyy/MM/dd HH:mm"));
+        weighInDtTxt.setBackground(Color.WHITE);
+        weighInDtTxt.setEditable(true);
+        
         weighInConstraint.fill = GridBagConstraints.HORIZONTAL;
         weighInConstraint.weightx = 0.5;
         weighInConstraint.gridx = 1;
@@ -163,7 +173,10 @@ public class Esta0001UI extends JPanel{
         weighOutConstraint.gridy = 0;
         weighOutPane.add(weighOutDtLabel, weighOutConstraint);
 
-        JTextField weighOutDtTxt = new JTextField();
+        JCalendarCombo weighOutDtTxt = new JCalendarCombo(JCalendarCombo.DISPLAY_DATE | JCalendarCombo.DISPLAY_TIME, true);
+        weighOutDtTxt.setDateFormat(new SimpleDateFormat("yyyy/MM/dd HH:mm"));
+        weighOutDtTxt.setBackground(Color.WHITE);
+        weighOutDtTxt.setEditable(true);
         weighOutConstraint.fill = GridBagConstraints.HORIZONTAL;
         weighOutConstraint.weightx = 0.5;
         weighOutConstraint.gridx = 1;
@@ -194,14 +207,14 @@ public class Esta0001UI extends JPanel{
 		bottomPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Details"));
 		
 		JTabbedPane bottomTab = new JTabbedPane();
-        Esta0001Form esta0001Form = new Esta0001Form();
+		Object[][] value = new Object[10][];
+		for(int i = 0; i < 10; i++){
+			value[i] = new Object[]{"","","","","", new Boolean(false),""};
+		}
+        Esta0001Form esta0001Form = new Esta0001Form(value);
 		JTable fieldList = new JTable(esta0001Form);
 		JScrollPane fieldPane = new JScrollPane(fieldList);
-		for(int i = 0; i < 10; i++){
-			esta0001Form.addRow(new String[7], i, i);
-		}
-		esta0001Form.addRow(new String[7], 1, 1);
-		esta0001Form.addRow(new String[7], 2, 2);
+		fieldList.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 		fieldList.setFillsViewportHeight(true);		
 		fieldList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		fieldList.setShowGrid(true);
