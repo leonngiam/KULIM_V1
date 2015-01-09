@@ -1,9 +1,11 @@
+<ol>
 JAR file required
-=================
--ifxjdbc.jar
--ifxjbdcx.jar
--jcalendar.jar
+ <li>ifxjdbc.jar</li>
+ <li>ifxjbdcx.jar</li>
+ <li>jcalendar.jar</li>
+</ol>
 
+<ol>
 Image file
-==========
-/resources/background.jpg
+ <li>/resources/background.jpg</li>
+</ol>
