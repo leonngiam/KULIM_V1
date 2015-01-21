@@ -20,7 +20,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.text.DateFormatter;
 
 import org.freixas.jcalendar.JCalendarCombo;
 
@@ -207,8 +206,8 @@ public class Esta0001UI extends JPanel{
 		bottomPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Details"));
 		
 		JTabbedPane bottomTab = new JTabbedPane();
-		Object[][] value = new Object[10][];
-		for(int i = 0; i < 10; i++){
+		Object[][] value = new Object[20][];
+		for(int i = 0; i < 20; i++){
 			value[i] = new Object[]{"","","","","", new Boolean(false),""};
 		}
         Esta0001Form esta0001Form = new Esta0001Form(value);
