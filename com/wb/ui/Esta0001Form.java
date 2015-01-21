@@ -1,10 +1,15 @@
 package com.wb.ui;
 
-import java.util.Vector;
-
 import javax.swing.table.AbstractTableModel;
 
 public class Esta0001Form extends AbstractTableModel {
+
+	Object[][] data = null;
+	
+	public Esta0001Form(Object[][] data) {
+		// TODO Auto-generated constructor stub
+		this.data = data;
+	}
 
 	private static final long serialVersionUID = 1L;
 
@@ -18,45 +23,31 @@ public class Esta0001Form extends AbstractTableModel {
 			"Weight"
 	};
 
-	Vector<String[]> data = new Vector<String[]>();
+    public int getRowCount() {
+        return data.length;
+    }
 
-	public void setValueAt(Object value, int row, int col) {
-		String newValue = (String) value;
-		String[] rowData = (String[]) data.elementAt(row);
-		rowData[col] = newValue;
-		fireTableCellUpdated(row, col);
-	}
+    public int getColumnCount() {
+        return columnNames.length;
+    }
 
-	public int getColumnCount() {
-		return columnNames.length;
-	}
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        return data[rowIndex][columnIndex];
+    }
 
-	public String getColumnName(int column) {
-		return columnNames[column];
-	}
+    @Override
+    public String getColumnName(int column) {
+        return columnNames[column];
+    }
+    
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return data[0][columnIndex].getClass();
+    }
 
-	public int getRowCount() {
-		return data.size();
-	}
-
-	public Object getValueAt(int row, int column) {
-		String[] rowData = (String[]) data.elementAt(row);
-		return rowData[column];
-	}
-
-	public void addRow(String[] value, int startRow, int endRow) {
-		data.addElement(value);
-		fireTableRowsInserted(startRow, endRow);
-	}
-
-	public void deleteRows(int startRow, int endRow) {
-		data.removeAllElements();
-		fireTableRowsDeleted(startRow, endRow);
-	}
-
-	public void deleteRow(int startRow, int endRow) {
-		data.removeElementAt(startRow);
-		fireTableRowsDeleted(startRow, endRow);
-	}
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return true;
+    }
 
 }
