@@ -44,16 +44,16 @@ public class LoginUI extends JFrame{
 			setUndecorated(true);
 			ImagePanel panel = new ImagePanel(LoginUI.class.getResource("/resources/background.jpg"));
 			this.getContentPane().setBackground( Color.WHITE );
-			setTitle("WeighBridge");
+			setTitle("Plantation Management System");
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			add(panel);
 			
 			panel.setLayout(null);
 
-			JLabel brandLabel = new JLabel("Weighbridge System");
-			brandLabel.setFont(new Font("Serif", Font.PLAIN, 24));
+			JLabel brandLabel = new JLabel("Plantation Management System");
+			brandLabel.setFont(new Font("Serif", Font.PLAIN, 20));
 			brandLabel.setForeground(Color.WHITE);
-			brandLabel.setBounds(110, 60, 280, 35);
+			brandLabel.setBounds(85, 60, 280, 35);
 			panel.add(brandLabel);
 
 			JLabel userLabel = new JLabel("Username");
