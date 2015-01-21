@@ -11,7 +11,7 @@ public class LoginInfo {
 		FileOutputStream out = null;
 		try {
 			byte dataToWrite[] = userId.getBytes();
-			out = new FileOutputStream("C:\\loginInfo.txt");
+			out = new FileOutputStream("D:\\loginInfo.txt");
 			out.write(dataToWrite);
 			out.close();
 		}  
@@ -36,7 +36,7 @@ public class LoginInfo {
 		try {
 			String sCurrentLine;
  
-			br = new BufferedReader(new FileReader("C:\\loginInfo.txt"));
+			br = new BufferedReader(new FileReader("D:\\loginInfo.txt"));
  
 			while ((sCurrentLine = br.readLine()) != null) {
 				userId = sCurrentLine;
