@@ -2,6 +2,7 @@ package com.wb.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -43,13 +44,26 @@ public class MainUI extends JFrame{
 		
 		try {
 			this.getContentPane().setBackground( Color.WHITE );
-			setTitle("WeighBridge");
+			setTitle("Plantation Management System");
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 			setLayout(new BorderLayout());
 			
 			JMenuBar menuBar = new JMenuBar();
 			JMenu fileMenu = new JMenu("File");
-			fileMenu.add(new JMenuItem("Change Password"));
+			
+			JMenuItem cp = new JMenuItem("Change Password");
+			fileMenu.add(cp);
+			
+			cp.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent evt) {
+					// TODO Auto-generated method stub
+				    
+					new ChangePasswordDialog(MainUI.this);
+				}
+			});
+			fileMenu.add(cp);
 			JMenuItem logOutMenuItem = new JMenuItem("Log Out");
 			fileMenu.add(logOutMenuItem);        	
 			logOutMenuItem.addActionListener(new ActionListener() {
@@ -98,7 +112,11 @@ public class MainUI extends JFrame{
 			editors.setBackground(Color.WHITE);
 			add(editors, BorderLayout.CENTER);
 			
-			this.setSize(800, 600);
+			Toolkit tk = Toolkit.getDefaultToolkit();
+			int xSize = ((int) tk.getScreenSize().getWidth());
+			int ySize = ((int) tk.getScreenSize().getHeight());
+			
+			this.setSize(xSize, ySize);
 			this.setLocationRelativeTo(null);
 			setVisible(true);
 			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
