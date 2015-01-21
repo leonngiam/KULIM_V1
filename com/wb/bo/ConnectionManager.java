@@ -62,7 +62,7 @@ public class ConnectionManager {
 		try {
 			String sCurrentLine;
  
-			br = new BufferedReader(new FileReader("C:\\jconfig.properties"));
+			br = new BufferedReader(new FileReader("D:\\jconfig.properties"));
 
 			connInfo = new String[4];
 			int count = 0;
@@ -97,7 +97,7 @@ public class ConnectionManager {
 			connInfo.append(password + "\n");
 			
 			byte dataToWrite[] = connInfo.toString().getBytes();
-			out = new FileOutputStream("C:\\jconfig.properties");
+			out = new FileOutputStream("D:\\jconfig.properties");
 			out.write(dataToWrite);
 			out.close();
 		}  
