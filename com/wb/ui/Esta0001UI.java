@@ -12,6 +12,8 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,8 +32,10 @@ public class Esta0001UI extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Esta0001UI(){
+	public Esta0001UI(final JDesktopPane dtp, JInternalFrame iFrame){
 		setLayout(new BorderLayout());
+		iFrame.setSize(800,600);
+		iFrame.setVisible(true);
 		JPanel upperPane = new JPanel();
 		upperPane.setBackground(Color.WHITE);
 		upperPane.setPreferredSize(new Dimension(getWidth(), 250));
@@ -210,7 +214,7 @@ public class Esta0001UI extends JPanel{
 		for(int i = 0; i < 20; i++){
 			value[i] = new Object[]{"","","","","", new Boolean(false),""};
 		}
-        Esta0001Form esta0001Form = new Esta0001Form(value);
+        	Esta0001Form esta0001Form = new Esta0001Form(value);
 		JTable fieldList = new JTable(esta0001Form);
 		JScrollPane fieldPane = new JScrollPane(fieldList);
 		fieldList.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()));
