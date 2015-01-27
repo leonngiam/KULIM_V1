@@ -14,6 +14,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,8 +31,10 @@ public class Admn0001UI extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
-	public Admn0001UI(){
+	public Admn0001UI(final JDesktopPane dtp, JInternalFrame iFrame){
         setLayout(new BorderLayout(5,5));
+		iFrame.setSize(800,600);
+		iFrame.setVisible(true);
         Admn0001Form admn0001Form = new Admn0001Form();
 		JTable userList = new JTable(admn0001Form);
 		JScrollPane userListPane = new JScrollPane(userList);
