@@ -7,12 +7,18 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -21,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 
 import org.freixas.jcalendar.JCalendarCombo;
 
@@ -31,16 +38,26 @@ public class Mill0001UI extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public Mill0001UI(){
+	public Mill0001UI(final JDesktopPane dtp, JInternalFrame iFrame){
 		setLayout(new BorderLayout());
+		iFrame.setSize(900,650);
+		iFrame.setVisible(true);
 		JPanel upperPane = new JPanel();
 		upperPane.setBackground(Color.BLACK);
 		upperPane.setPreferredSize(new Dimension(getWidth(), 80));
 		upperPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JLabel wbLabel = new JLabel("3000");
+		final JLabel wbLabel = new JLabel("3000");
 		wbLabel.setForeground(Color.GREEN);
 		wbLabel.setFont(new Font("Arial", Font.PLAIN, 72));
 		upperPane.add(wbLabel);
+		
+		Timer t1 = new Timer(300, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+		    	int rand = (int) (Math.random() * 15);	                	
+            	wbLabel.setText((rand + 3000) + "");
+            }
+        });
+        t1.start();
 		
 		add(upperPane, BorderLayout.PAGE_START);
 		
@@ -244,7 +261,7 @@ public class Mill0001UI extends JPanel{
 		for(int i = 0; i < 20; i++){
 			value[i] = new Object[]{"","","","","", new Boolean(false),""};
 		}
-        Mill0001Form mill0001Form = new Mill0001Form(value);
+        	Mill0001Form mill0001Form = new Mill0001Form(value);
 		JTable fieldList = new JTable(mill0001Form);
 		JScrollPane fieldPane = new JScrollPane(fieldList);
 		fieldList.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()));
