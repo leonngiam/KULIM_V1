@@ -11,25 +11,41 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 
 import org.freixas.jcalendar.JCalendarCombo;
+
+import com.wb.bo.DriverBO;
+import com.wb.bo.FFBReceivedBO;
+import com.wb.bo.OrderBy;
+import com.wb.bo.ProductBO;
+import com.wb.bo.TransporterBO;
+import com.wb.bo.VehicleBO;
 
 public class Mill0001UI extends JPanel{
 	
@@ -39,25 +55,39 @@ public class Mill0001UI extends JPanel{
 	private static final long serialVersionUID = 1L;
 
 	public Mill0001UI(final JDesktopPane dtp, JInternalFrame iFrame){
+		
 		setLayout(new BorderLayout());
-		iFrame.setSize(900,650);
+		iFrame.setSize(900,670);
 		iFrame.setVisible(true);
+		
 		JPanel upperPane = new JPanel();
-		upperPane.setBackground(Color.BLACK);
-		upperPane.setPreferredSize(new Dimension(getWidth(), 80));
-		upperPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		upperPane.setLayout(new BorderLayout());
+		
+		JToolBar upperPaneToolbar = new JToolBar();
+		upperPaneToolbar.setFloatable(false);
+		JButton submitBtn = new JButton("Submit");
+		JButton weighBtn = new JButton("Weigh");
+		upperPaneToolbar.add(submitBtn);
+		upperPaneToolbar.add(weighBtn);
+		upperPane.add(upperPaneToolbar, BorderLayout.PAGE_START);		
+		
+		JPanel upperPaneWB = new JPanel();
+		upperPaneWB.setBackground(Color.BLACK);
+		upperPaneWB.setPreferredSize(new Dimension(getWidth(), 80));
+		upperPaneWB.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		final JLabel wbLabel = new JLabel("3000");
 		wbLabel.setForeground(Color.GREEN);
 		wbLabel.setFont(new Font("Arial", Font.PLAIN, 72));
-		upperPane.add(wbLabel);
+		upperPaneWB.add(wbLabel);
 		
-		Timer t1 = new Timer(300, new ActionListener() {
+		Timer t1 = new Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 		    	int rand = (int) (Math.random() * 15);	                	
             	wbLabel.setText((rand + 3000) + "");
             }
         });
         t1.start();
+        upperPane.add(upperPaneWB, BorderLayout.CENTER);
 		
 		add(upperPane, BorderLayout.PAGE_START);
 		
@@ -76,7 +106,7 @@ public class Mill0001UI extends JPanel{
         c.gridwidth = 1;
         centerPane.add(vehicleLbl, c);
 
-        JComboBox<String> vehicleCb = new JComboBox<String>();
+        final JComboBox vehicleCb = new JComboBox(setupVehicleList());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
@@ -92,7 +122,7 @@ public class Mill0001UI extends JPanel{
         c.gridwidth = 1;
         centerPane.add(transporterLbl, c);
 
-        JComboBox<String> transporterCb = new JComboBox<String>();
+        final JComboBox transporterCb = new JComboBox(setupTransporterList());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
@@ -108,7 +138,7 @@ public class Mill0001UI extends JPanel{
         c.gridwidth = 1;
         centerPane.add(productLbl, c);
 
-        JComboBox<String> productCb = new JComboBox<String>();
+        final JComboBox productCb = new JComboBox(setupProductList());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
@@ -124,7 +154,7 @@ public class Mill0001UI extends JPanel{
         c.gridwidth = 1;
         centerPane.add(driverLbl, c);
 
-        JComboBox<String> driverCb = new JComboBox<String>();
+        final JComboBox driverCb = new JComboBox(setupDriverList());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
@@ -140,7 +170,7 @@ public class Mill0001UI extends JPanel{
         c.gridwidth = 1;
         centerPane.add(driverICLbl, c);
 
-        JTextField driverICTxt = new JTextField();
+        final JTextField driverICTxt = new JTextField();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 3;
@@ -156,7 +186,7 @@ public class Mill0001UI extends JPanel{
         c.gridwidth = 1;
         centerPane.add(remarkLbl, c);
 
-        JTextArea remarkArea = new JTextArea(8,20);
+        final JTextField remarkArea = new JTextField();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 0.5;
         c.gridx = 1;
@@ -170,7 +200,7 @@ public class Mill0001UI extends JPanel{
 		weighPane.setBackground(Color.WHITE);
 		
 		JPanel weighInPane = new JPanel(new GridBagLayout());
-		weighInPane.setPreferredSize(new Dimension(400, 140));
+		weighInPane.setPreferredSize(new Dimension(400, 120));
 		weighInPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Weigh In"));
 		weighInPane.setBackground(Color.WHITE);
         GridBagConstraints weighInConstraint = new GridBagConstraints();
@@ -183,7 +213,7 @@ public class Mill0001UI extends JPanel{
         weighInConstraint.gridy = 0;
         weighInPane.add(weighInDtLabel, weighInConstraint);
 
-        JCalendarCombo weighInDtTxt = new JCalendarCombo(JCalendarCombo.DISPLAY_DATE | JCalendarCombo.DISPLAY_TIME, true);
+        final JCalendarCombo weighInDtTxt = new JCalendarCombo(JCalendarCombo.DISPLAY_DATE | JCalendarCombo.DISPLAY_TIME, true);
         weighInDtTxt.setDateFormat(new SimpleDateFormat("yyyy/MM/dd HH:mm"));
         weighInDtTxt.setBackground(Color.WHITE);
         weighInDtTxt.setEditable(true);
@@ -201,7 +231,8 @@ public class Mill0001UI extends JPanel{
         weighInConstraint.gridy = 1;
         weighInPane.add(weighInKgLabel, weighInConstraint);
 
-        JTextField weighInKgTxt = new JTextField();
+        final JTextField weighInKgTxt = new JTextField();
+        weighInKgTxt.setEditable(false);
         weighInConstraint.fill = GridBagConstraints.HORIZONTAL;
         weighInConstraint.weightx = 0.5;
         weighInConstraint.gridx = 1;
@@ -211,7 +242,7 @@ public class Mill0001UI extends JPanel{
 		weighPane.add(weighInPane, BorderLayout.PAGE_START);
 		
 		JPanel weighOutPane = new JPanel(new GridBagLayout());
-		weighOutPane.setPreferredSize(new Dimension(250, 150));
+		weighOutPane.setPreferredSize(new Dimension(250, 100));
 		weighOutPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Weigh Out"));
 		weighOutPane.setBackground(Color.WHITE);
         GridBagConstraints weighOutConstraint = new GridBagConstraints();
@@ -261,7 +292,7 @@ public class Mill0001UI extends JPanel{
 		for(int i = 0; i < 20; i++){
 			value[i] = new Object[]{"","","","","", new Boolean(false),""};
 		}
-        	Mill0001Form mill0001Form = new Mill0001Form(value);
+        Mill0001Form mill0001Form = new Mill0001Form(value);
 		JTable fieldList = new JTable(mill0001Form);
 		JScrollPane fieldPane = new JScrollPane(fieldList);
 		fieldList.getColumnModel().getColumn(5).setCellEditor(new DefaultCellEditor(new JCheckBox()));
@@ -275,10 +306,152 @@ public class Mill0001UI extends JPanel{
 		
 		add(bottomPane, BorderLayout.PAGE_END);
 		
+		weighBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				weighInKgTxt.setText(wbLabel.getText());
+			}
+		});
 		
-		
-		
-		
+		submitBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				try {
+					FFBReceivedBO ffbReceived = new FFBReceivedBO();
+					
+					ComboBoxItem vehicleItem = (ComboBoxItem) vehicleCb.getSelectedItem();
+					ComboBoxItem transporterItem = (ComboBoxItem) transporterCb.getSelectedItem();
+					ComboBoxItem productItem = (ComboBoxItem) productCb.getSelectedItem();
+					ComboBoxItem driverItem = (ComboBoxItem) driverCb.getSelectedItem();
+					String driverIC = driverICTxt.getText();
+					String remarks = remarkArea.getText();
+					String weighIn = weighInKgTxt.getText();
+					
+					if(!vehicleItem.getCode().equals("") &&
+					   !transporterItem.getCode().equals("") &&
+					   !productItem.getCode().equals("") &&
+					   !driverItem.getCode().equals("") &&
+					   !driverICTxt.getText().equals("") &&
+					   !remarkArea.getText().equals("") &&
+					   !weighInKgTxt.getText().equals("")){
+						ffbReceived.setVehicle_no(vehicleItem.getCode());
+						ffbReceived.setTransporter_code(transporterItem.getCode());
+						ffbReceived.setProduct_code(productItem.getCode());
+						ffbReceived.setDriver_code(driverItem.getCode());
+						ffbReceived.setDriver_ic(driverIC);
+						ffbReceived.setRemarks(remarks);
+						ffbReceived.setWeigh_in_dt(new Timestamp(weighInDtTxt.getDate().getTime()));
+						ffbReceived.setWeigh_in_tonn(new BigDecimal(weighIn));
+						
+						ffbReceived.insert();					
+						
+						JOptionPane.showMessageDialog(Mill0001UI.this, "Record successfully inserted.");	
+					}
+					
+					vehicleCb.setSelectedIndex(0);		
+					transporterCb.setSelectedIndex(0);		
+					productCb.setSelectedIndex(0);			
+					driverCb.setSelectedIndex(0);			
+					driverICTxt.setText("");			
+					remarkArea.setText("");				
+					weighInKgTxt.setText("");			
+					weighInDtTxt.setDate(new Date(System.currentTimeMillis()));
+					
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 	}	
+	
+	private Vector setupTransporterList(){
+		Vector data = new Vector();
+		data.addElement(new ComboBoxItem("", ""));
+		try {
+			List boList = new TransporterBO().list(null, new OrderBy[]{new OrderBy(TransporterBO.FILTER_DESC)});
+			if(boList != null && boList.size() > 0){
+				for(int i = 0; i < boList.size(); i++){
+					TransporterBO bo = (TransporterBO) boList.get(i);
+					
+					data.addElement(new ComboBoxItem(bo.getCode(), bo.getDescription()));
+				}				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return data;	
+	}
+	
+	private Vector setupVehicleList(){
+		Vector data = new Vector();
+		data.addElement(new ComboBoxItem("", ""));
+		try {
+			List boList = new VehicleBO().list(null, new OrderBy[]{new OrderBy(TransporterBO.FILTER_CODE)});
+			if(boList != null && boList.size() > 0){
+				for(int i = 0; i < boList.size(); i++){
+					VehicleBO bo = (VehicleBO) boList.get(i);
+					
+					data.addElement(new ComboBoxItem(bo.getCode(), bo.getDescription(), true));
+				}				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return data;	
+	}
+	
+	private Vector setupProductList(){
+		Vector data = new Vector();
+		data.addElement(new ComboBoxItem("", ""));
+		try {
+			List boList = new ProductBO().list(null, new OrderBy[]{new OrderBy(TransporterBO.FILTER_DESC)});
+			if(boList != null && boList.size() > 0){
+				for(int i = 0; i < boList.size(); i++){
+					ProductBO bo = (ProductBO) boList.get(i);
+					
+					data.addElement(new ComboBoxItem(bo.getCode(), bo.getDescription()));
+				}				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return data;	
+	}
+	
+	private Vector setupDriverList(){
+		Vector data = new Vector();
+		data.addElement(new ComboBoxItem("", ""));
+		try {
+			List boList = new DriverBO().list(null, new OrderBy[]{new OrderBy(TransporterBO.FILTER_DESC)});
+			if(boList != null && boList.size() > 0){
+				for(int i = 0; i < boList.size(); i++){
+					DriverBO bo = (DriverBO) boList.get(i);
+					
+					data.addElement(new ComboBoxItem(bo.getCode(), bo.getDescription()));
+				}				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return data;	
+	}
 	
 }
